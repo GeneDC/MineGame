@@ -6,7 +6,7 @@
 
 [node name="Miner" type="Node3D"]
 script = ExtResource("1_xjymj")
-OreTypes = Array[int]([1, 2, 3])
+ore_types = Array[int]([1, 2, 3])
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69957, 0)

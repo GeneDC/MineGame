@@ -1,7 +1,7 @@
 extends Node3D
 class_name FactoryGrid
 
-var grid_size := Vector3i(10, 10, 10)
+var grid_size := Vector3i(20, 10, 20)
 var item_to_place: PackedScene = preload("res://Prefabs/Conveyor.tscn")
 var raycast: RayCast3D = null
 var preview_ghost: Node3D = null
@@ -25,16 +25,18 @@ func _ready() -> void:
 	assert(raycast != null)
 
 func _process(_delta: float) -> void:
-	if not raycast.is_colliding():
-		preview_ghost.visible = false
-		return
+	var target_pos := Vector3.ZERO
+	
+	if raycast.is_colliding():
+		var collision_point := raycast.get_collision_point()
+		var collision_normal := raycast.get_collision_normal()
+		# Offset the point slightly along the normal to stay on top of the surface
+		target_pos = collision_point + (collision_normal * 0.5)
+	else:
+		target_pos = raycast.to_global(raycast.target_position)
 
-	var collision_point := raycast.get_collision_point()
-	var collision_normal := raycast.get_collision_normal()
-
-	# Offset the point slightly along the normal to stay on top of the surface
-	var target_pos := collision_point + (collision_normal * 0.5)
-	place_item_coordinate = target_pos.snapped(Vector3.ONE)
+	# Round down as the grid origin is 0, 0, 0
+	place_item_coordinate = Vector3i(floori(target_pos.x), floori(target_pos.y), floori(target_pos.z))
 	
 	var is_placable := (_is_valid_coordinate(place_item_coordinate) and 
 						_is_coordinate_free(place_item_coordinate))
@@ -63,18 +65,19 @@ func _place_item(coordinate: Vector3i) -> void:
 		push_error("Failed to instantiate grid item.")
 		return
 
-	grid_item.rotation.y = deg_to_rad(item_rotaion * 90)
+	grid_item.rotation.y = deg_to_rad(item_rotaion * -90)
 	
 	add_child(grid_item)
 	grid_item.global_position = Vector3(coordinate)
-	grid_items[coordinate.x + coordinate.y * grid_size.y + coordinate.z * grid_size.z * grid_size.z] = grid_item
+	grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y] = grid_item
 
 func _is_valid_coordinate(coordinate: Vector3i) -> bool:
-	return coordinate.x < grid_size.x && coordinate.y < grid_size.y && coordinate.z < grid_size.z
+	return (coordinate.x < grid_size.x && coordinate.y < grid_size.y && coordinate.z < grid_size.z
+			&& coordinate.x >= 0 && coordinate.y >= 0 && coordinate.z >= 0)
 
 ## Returns true if there is no item at this coordinate
 func _is_coordinate_free(coordinate: Vector3i) -> bool:
-	return grid_items[coordinate.x + coordinate.y * grid_size.y + coordinate.z * grid_size.z * grid_size.z] == null
+	return grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y] == null
 
 func _prepare_ghost_recursive(node: Node, material: Material) -> void:
 	# Disable Scripts & Processing

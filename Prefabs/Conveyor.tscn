@@ -7,14 +7,14 @@
 [ext_resource type="Material" uid="uid://hagnn4y4y1d0" path="res://Materials/ConveyorBelt.tres" id="2_c5kka"]
 [ext_resource type="Script" uid="uid://dnqpu3noj2rr6" path="res://Scripts/ConveyorBelt.gd" id="2_sqgfj"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_btrgq"]
-size = Vector3(1, 0.204704, 1)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sqgfj"]
-points = PackedVector3Array(1.02, 0.75, 1, 1.02, 0.75, 0.89999, -1.02, 0.75, 1, 1.02, 0, 1, 1.02, 0, 0.899833, -1.02, 0.75, 0.89999, -1.02, 0, 1, -1.02, 0, 0.9)
-
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bn5i1"]
-points = PackedVector3Array(1.02, 0.75, -0.90001, 1.02, 0.75, -1, -1.02, 0.75, -0.90001, -1.02, 0, -0.9, 1.02, 0, -0.90001, 1.02, 0, -1, -1.02, 0.75, -1, -1.02, 0, -1)
+points = PackedVector3Array(0, 1.65948, 1.99981, -2, 1.25, 2, 0, 1.25, 1.99981, 0, 1.65948, -3.57628e-06, -2, 1.65948, 1.99981, -2, 1.25, -3.57628e-06, 0, 1.25, -3.57628e-06, -2, 1.65948, -3.57628e-06)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ux06k"]
+points = PackedVector3Array(0.02, 1.75, 2.02, 0.02, 1.75, 1.91999, -2.02, 1.75, 2.02, 0.02, 1, 2.02, 0.02, 1, 1.91983, -2.02, 1.75, 1.91999, -2.02, 1, 2.02, -2.02, 1, 1.92)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_45bor"]
+points = PackedVector3Array(0.02, 1.75, 0.0799904, 0.02, 1.75, -0.02, -2.02, 1.75, 0.0799904, -2.02, 1, 0.0800002, 0.02, 1, 0.0799904, 0.02, 1, -0.02, -2.02, 1.75, -0.02, -2.02, 1, -0.02)
 
 [node name="Conveyor" type="Node3D"]
 script = ExtResource("1_bn5i1")
@@ -24,25 +24,33 @@ collision_mask = 0
 physics_material_override = ExtResource("1_btrgq")
 script = ExtResource("2_sqgfj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Belt"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.226284, 0)
-shape = SubResource("BoxShape3D_btrgq")
+[node name="BelthColMes" type="CollisionShape3D" parent="Belt"]
+transform = Transform3D(0, 0, 0.5, 0, 0.5, 0, -0.5, 0, 0, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_bn5i1")
 
 [node name="Sides" type="StaticBody3D" parent="."]
 collision_mask = 0
 physics_material_override = ExtResource("1_odpx3")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Sides"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0.01)
-shape = SubResource("ConvexPolygonShape3D_sqgfj")
-
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Sides"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -0.01)
-shape = SubResource("ConvexPolygonShape3D_bn5i1")
+transform = Transform3D(0, 0, 0.5, 0, 0.5, 0, -0.5, 0, 0, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_ux06k")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Sides"]
+transform = Transform3D(0, 0, 0.5, 0, 0.5, 0, -0.5, 0, 0, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_45bor")
 
 [node name="Conveyor" parent="." instance=ExtResource("1_nsa4v")]
+physics_interpolation_mode = 2
 
 [node name="ConveyorBelt" parent="Conveyor" index="0"]
+physics_interpolation_mode = 2
 surface_material_override/0 = ExtResource("2_c5kka")
+
+[node name="ConveyorRightSide" parent="Conveyor" index="1"]
+physics_interpolation_mode = 2
+
+[node name="ConveyorLeftSide" parent="Conveyor" index="2"]
+physics_interpolation_mode = 2
 
 [editable path="Conveyor"]
