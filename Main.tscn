@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://0ks2dqvpf5ae"]
+[gd_scene load_steps=7 format=3 uid="uid://0ks2dqvpf5ae"]
 
 [ext_resource type="Material" uid="uid://bsora1yg04nug" path="res://Materials/Ground.tres" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://cl6rgs4rfg3j5" path="res://Scripts/FreeCamera.gd" id="3_cm0pq"]
+[ext_resource type="Texture2D" uid="uid://kyp0ng33o2oe" path="res://Textures/crosshair_dot.png" id="4_cm0pq"]
 [ext_resource type="PackedScene" uid="uid://o54kt2f1hwpi" path="res://Prefabs/Miner.tscn" id="4_fos0i"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_g1cgm"]
@@ -12,7 +13,7 @@ size = Vector3(1, 0.499634, 1)
 [node name="Root" type="Node3D"]
 
 [node name="GroundPlane" type="Node3D" parent="."]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 10, 0, 10)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GroundPlane"]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
@@ -27,7 +28,7 @@ shape = SubResource("BoxShape3D_jvalw")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 physics_interpolation_mode = 2
-transform = Transform3D(1, 0, 0, 0, 0.960498, 0.278287, 0, -0.278287, 0.960498, 0, 3.03047, 5.26681)
+transform = Transform3D(-0.0541775, 0.348949, -0.935574, 0, 0.93695, 0.349463, 0.998531, 0.018933, -0.0507616, 5.64223, 4.37209, 9.25436)
 top_level = true
 script = ExtResource("3_cm0pq")
 
@@ -35,7 +36,24 @@ script = ExtResource("3_cm0pq")
 target_position = Vector3(0, 0, -4)
 
 [node name="Miner" parent="." instance=ExtResource("4_fos0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1292, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 10)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.917095, -0.356206, 0.179036, 0, 0.449085, 0.893489, -0.398669, -0.819414, 0.411854, 7.20138, 12.1036, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_cm0pq")
+stretch_mode = 5
