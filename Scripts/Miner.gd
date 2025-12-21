@@ -12,7 +12,7 @@ var _Timer: Timer = null
 func _ready() -> void:
 	_Timer = Timer.new()
 	add_child(_Timer)
-	_Timer.wait_time = 0.005
+	_Timer.wait_time = 0.5
 	_Timer.one_shot = false
 	_Timer.timeout.connect(SpawnOre)
 	_Timer.start()

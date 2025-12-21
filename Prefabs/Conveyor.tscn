@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cpsg2qs50para"]
+[gd_scene load_steps=10 format=3 uid="uid://cpsg2qs50para"]
 
+[ext_resource type="Script" uid="uid://c45ri0wqh7rfx" path="res://Scripts/GridItem.gd" id="1_bn5i1"]
 [ext_resource type="PhysicsMaterial" uid="uid://jvrfkcihkqvk" path="res://PhysicsMaterials/ConveyorBeltPhysicsMaterial.tres" id="1_btrgq"]
 [ext_resource type="PackedScene" uid="uid://b6874yg0tetqp" path="res://Meshes/ConveyorMesh.glb" id="1_nsa4v"]
 [ext_resource type="PhysicsMaterial" uid="uid://dri5hyc4yu142" path="res://PhysicsMaterials/MachinePhysicsMaterial.tres" id="1_odpx3"]
@@ -16,6 +17,7 @@ points = PackedVector3Array(1.02, 0.75, 1, 1.02, 0.75, 0.89999, -1.02, 0.75, 1, 
 points = PackedVector3Array(1.02, 0.75, -0.90001, 1.02, 0.75, -1, -1.02, 0.75, -0.90001, -1.02, 0, -0.9, 1.02, 0, -0.90001, 1.02, 0, -1, -1.02, 0.75, -1, -1.02, 0, -1)
 
 [node name="Conveyor" type="Node3D"]
+script = ExtResource("1_bn5i1")
 
 [node name="Belt" type="StaticBody3D" parent="."]
 collision_mask = 0
@@ -41,6 +43,6 @@ shape = SubResource("ConvexPolygonShape3D_bn5i1")
 [node name="Conveyor" parent="." instance=ExtResource("1_nsa4v")]
 
 [node name="ConveyorBelt" parent="Conveyor" index="0"]
-material_override = ExtResource("2_c5kka")
+surface_material_override/0 = ExtResource("2_c5kka")
 
 [editable path="Conveyor"]

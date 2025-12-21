@@ -12,5 +12,5 @@ void fragment() {
 
     // Apply the offset UV to the texture
     vec4 tex = texture(belt_texture, moving_uv);
-    ALBEDO = tex.rgb;
+    ALBEDO = ALBEDO * tex.rgb;
 }

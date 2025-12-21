@@ -80,7 +80,7 @@ func _ImguiWindow() -> void:
 	if (ImGui.Button("Clear Ores")):
 		for oreType in PoolMap:
 			var orePool: Pool = PoolMap[oreType]
-			push_warning("Pre Free - `%s` Ore Instances: %d, Free: %d" % [MineGame.OreType.find_key(oreType), orePool.Instances.size(), orePool.FreeIndices.size()])
+			#push_warning("Pre Free - `%s` Ore Instances: %d, Free: %d" % [MineGame.OreType.find_key(oreType), orePool.Instances.size(), orePool.FreeIndices.size()])
 			for ore in orePool.Instances:
 				FreeOre(ore)
-			push_warning("Post Free - `%s` Ore Instances: %d, Free: %d" % [MineGame.OreType.find_key(oreType), orePool.Instances.size(), orePool.FreeIndices.size()])
+			#push_warning("Post Free - `%s` Ore Instances: %d, Free: %d" % [MineGame.OreType.find_key(oreType), orePool.Instances.size(), orePool.FreeIndices.size()])
