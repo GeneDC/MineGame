@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://da5gxx21sjn5u"]
+
+[ext_resource type="Script" uid="uid://chtk1igmmg3he" path="res://Scripts/Ore.gd" id="1_pt15t"]
+[ext_resource type="PackedScene" uid="uid://4f176q274prd" path="res://Meshes/OreMesh.glb" id="2_j3avl"]
+[ext_resource type="Material" uid="uid://lkvwri22cs3l" path="res://Materials/CoalMaterial.tres" id="3_dwoin"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ggyu4"]
+points = PackedVector3Array(-0.0962947, -0.0688203, 0.227396, -0.0122613, -0.00764367, -0.221725, -0.00469652, -0.0152935, -0.222081, 0.223006, 0.0985538, 0.0132996, -0.110437, 0.196242, -0.0319831, 0.215262, -0.113861, -0.0169554, -0.219981, -0.169345, 0.0595933, 0.0627992, 0.0974384, 0.208417, 0.00294463, -0.205552, -0.00183148, 0.130082, -0.0375651, 0.200511, -0.254441, -0.0303315, 0.0889774, 0.186153, 0.0991196, -0.116336, -0.155209, 0.00733855, -0.144741, -0.111054, 0.0910796, 0.165344, 0.0104062, -0.189313, 0.0965972, -0.0576238, -0.174118, -0.0925801, -0.191269, -0.109013, 0.215985, 0.0559759, -0.0986033, -0.176143, 0.232296, -0.0229781, -0.1012, 0.101071, 0.166017, 0.0283476, 0.0180268, 0.1663, 0.126773, 0.0328744, 0.0976197, -0.167211, 0.226954, 0.00762468, 0.0597496, -0.202818, 0.0227515, -0.0704421, -0.154623, -0.11255, -0.0916511, 0.0414297, -0.0383487, 0.235752, 0.0789095, -0.174776, 0.0892794, -0.102274, 0.164881, 0.0882618, -0.0648301, 0.104991, -0.144473, 0.0850529, -0.172314, -0.0466014, -0.0498541, 0.0977345, 0.193974, 0.14767, -0.00769962, -0.161711)
+
+[node name="RigidBody3D" type="RigidBody3D"]
+physics_interpolation_mode = 1
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_pt15t")
+Type = 1
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_ggyu4")
+
+[node name="OreMesh" parent="." instance=ExtResource("2_j3avl")]
+
+[node name="Ore" parent="OreMesh" index="0"]
+material_override = ExtResource("3_dwoin")
+
+[editable path="OreMesh"]

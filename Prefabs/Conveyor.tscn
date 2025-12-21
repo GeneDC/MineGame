@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://cpsg2qs50para"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://jvrfkcihkqvk" path="res://PhysicsMaterials/ConveyorBeltPhysicsMaterial.tres" id="1_btrgq"]
+[ext_resource type="PackedScene" uid="uid://b6874yg0tetqp" path="res://Meshes/ConveyorMesh.glb" id="1_nsa4v"]
+[ext_resource type="PhysicsMaterial" uid="uid://dri5hyc4yu142" path="res://PhysicsMaterials/MachinePhysicsMaterial.tres" id="1_odpx3"]
+[ext_resource type="Material" uid="uid://hagnn4y4y1d0" path="res://Materials/ConveyorBelt.tres" id="2_c5kka"]
+[ext_resource type="Script" uid="uid://dnqpu3noj2rr6" path="res://Scripts/ConveyorBelt.gd" id="2_sqgfj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_btrgq"]
+size = Vector3(1, 0.204704, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sqgfj"]
+points = PackedVector3Array(1.02, 0.75, 1, 1.02, 0.75, 0.89999, -1.02, 0.75, 1, 1.02, 0, 1, 1.02, 0, 0.899833, -1.02, 0.75, 0.89999, -1.02, 0, 1, -1.02, 0, 0.9)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bn5i1"]
+points = PackedVector3Array(1.02, 0.75, -0.90001, 1.02, 0.75, -1, -1.02, 0.75, -0.90001, -1.02, 0, -0.9, 1.02, 0, -0.90001, 1.02, 0, -1, -1.02, 0.75, -1, -1.02, 0, -1)
+
+[node name="Conveyor" type="Node3D"]
+
+[node name="Belt" type="StaticBody3D" parent="."]
+collision_mask = 0
+physics_material_override = ExtResource("1_btrgq")
+script = ExtResource("2_sqgfj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Belt"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.226284, 0)
+shape = SubResource("BoxShape3D_btrgq")
+
+[node name="Sides" type="StaticBody3D" parent="."]
+collision_mask = 0
+physics_material_override = ExtResource("1_odpx3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sides"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0.01)
+shape = SubResource("ConvexPolygonShape3D_sqgfj")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Sides"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -0.01)
+shape = SubResource("ConvexPolygonShape3D_bn5i1")
+
+[node name="Conveyor" parent="." instance=ExtResource("1_nsa4v")]
+
+[node name="ConveyorBelt" parent="Conveyor" index="0"]
+material_override = ExtResource("2_c5kka")
+
+[editable path="Conveyor"]

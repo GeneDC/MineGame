@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dlc240muajxwf"]
+
+[ext_resource type="Shader" uid="uid://cuvulsu3fletf" path="res://Shaders/GlobalTriplanar.gdshader" id="1_uhaiu"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_uhaiu")
+shader_parameter/base_color = Color(0.25, 0.25, 0, 1)
+shader_parameter/texture_intensity = 1.0
+shader_parameter/scroll_speed_x = 0.0
+shader_parameter/scroll_speed_y = 0.0
