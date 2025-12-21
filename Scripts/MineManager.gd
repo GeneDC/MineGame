@@ -46,15 +46,18 @@ func _process(_delta: float) -> void:
 	var target_pos := collision_point + (collision_normal * 0.5)
 	place_item_coordinate = target_pos.snapped(Vector3.ONE)
 	
-	if not _is_valid_coordinate(place_item_coordinate):
-		# make ghost red
-		return
+	var is_placable := (_is_valid_coordinate(place_item_coordinate) and 
+						_is_coordinate_free(place_item_coordinate))
+	if is_placable:
+		_override_material_recursive(preview_ghost, ghost_material_placable)
+	else:
+		_override_material_recursive(preview_ghost, ghost_material_nonplacable)
 
 	preview_ghost.global_position = place_item_coordinate
 	preview_ghost.rotation.y = deg_to_rad(item_rotaion * 90)
 	preview_ghost.visible = true
 
-	if Input.is_action_just_pressed("place_item"):
+	if is_placable && Input.is_action_just_pressed("place_item"):
 		_place_item(preview_ghost.global_position)
 	
 	if Input.is_action_just_pressed("rotate_item"):
@@ -74,16 +77,16 @@ func _place_item(coordinate: Vector3i) -> void:
 	
 	grid_item_parent.add_child(grid_item)
 	grid_item.global_position = Vector3(coordinate)
-	grid_items[coordinate.x + coordinate.y * coordinate.y + coordinate.z * coordinate.z * coordinate.z] = grid_item
+	grid_items[coordinate.x + coordinate.y * grid_size.y + coordinate.z * grid_size.z * grid_size.z] = grid_item
 
 func _is_valid_coordinate(coordinate: Vector3i) -> bool:
 	return coordinate.x < grid_size.x && coordinate.y < grid_size.y && coordinate.z < grid_size.z
 
 ## Returns true if there is no item at this coordinate
 func _is_coordinate_free(coordinate: Vector3i) -> bool:
-	return grid_items[coordinate.x + coordinate.y * coordinate.y + coordinate.z * coordinate.z * coordinate.z] == null
+	return grid_items[coordinate.x + coordinate.y * grid_size.y + coordinate.z * grid_size.z * grid_size.z] == null
 
-func _prepare_ghost_recursive(node: Node, ghost_material: Material) -> void:
+func _prepare_ghost_recursive(node: Node, material: Material) -> void:
 	# Disable Scripts & Processing
 	node.set_process(false)
 	node.set_physics_process(false)
@@ -102,10 +105,20 @@ func _prepare_ghost_recursive(node: Node, ghost_material: Material) -> void:
 	if node is MeshInstance3D:
 		var mesh_instance := node as MeshInstance3D
 		for i in mesh_instance.mesh.get_surface_count():
-			mesh_instance.set_surface_override_material(i, ghost_material)
+			mesh_instance.set_surface_override_material(i, material)
 		
 	for child in node.get_children():
-		_prepare_ghost_recursive(child, ghost_material)
+		_prepare_ghost_recursive(child, material)
+
+func _override_material_recursive(node: Node, material: Material) -> void:
+	if node is MeshInstance3D:
+		var mesh_instance := node as MeshInstance3D
+		for i in mesh_instance.mesh.get_surface_count():
+			mesh_instance.set_surface_override_material(i, material)
+	
+	for child in node.get_children():
+		_override_material_recursive(child, material)
+
 
 func _ImguiWindow() -> void:
 	ImGui.Text("Mine Manager...")
