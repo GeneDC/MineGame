@@ -32,7 +32,7 @@ top_level = true
 script = ExtResource("3_cm0pq")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
-target_position = Vector3(0, 0, -1000)
+target_position = Vector3(0, 0, -4)
 
 [node name="Miner" parent="." instance=ExtResource("4_fos0i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1292, 0)

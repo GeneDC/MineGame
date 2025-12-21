@@ -11,7 +11,7 @@ var ghost_material_placable: Material = preload("res://Materials/GhostItemBlueMa
 var ghost_material_nonplacable: Material = preload("res://Materials/GhostItemRedMaterial.tres")
 var place_item_coordinate: Vector3i = Vector3i.ZERO
 var grid_items: Array[GridItem] = []
-
+var item_rotaion: int = 0
 
 func _ready() -> void:
 	GameImGui.RegisterMainMenuWindow("Debug", "Mine Manager", _ImguiWindow)
@@ -51,12 +51,14 @@ func _process(_delta: float) -> void:
 		return
 
 	preview_ghost.global_position = place_item_coordinate
+	preview_ghost.rotation.y = deg_to_rad(item_rotaion * 90)
 	preview_ghost.visible = true
 
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-	#if Input.is_action_just_pressed("place_object"):
+	if Input.is_action_just_pressed("place_item"):
 		_place_item(preview_ghost.global_position)
-
+	
+	if Input.is_action_just_pressed("rotate_item"):
+		item_rotaion = (item_rotaion + 1) % 4
 
 func _place_item(coordinate: Vector3i) -> void:
 	if not _is_valid_coordinate(place_item_coordinate):
@@ -68,6 +70,8 @@ func _place_item(coordinate: Vector3i) -> void:
 		push_error("Failed to instantiate grid item.")
 		return
 
+	grid_item.rotation.y = deg_to_rad(item_rotaion * 90)
+	
 	grid_item_parent.add_child(grid_item)
 	grid_item.global_position = Vector3(coordinate)
 	grid_items[coordinate.x + coordinate.y * coordinate.y + coordinate.z * coordinate.z * coordinate.z] = grid_item
