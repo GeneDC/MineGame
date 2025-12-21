@@ -25,4 +25,4 @@ func SpawnOre() -> void:
 		return
 
 	var launchImpulse := Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))
-	MineManager.orePool.InstantiateOre(oreType, global_position, launchImpulse)
+	MineManager.ore_pool.InstantiateOre(oreType, global_position, launchImpulse)
