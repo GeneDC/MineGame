@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 	else:
 		_override_material_recursive(preview_ghost, ghost_material_nonplacable)
 
-	preview_ghost.global_position = place_item_coordinate
+	preview_ghost.global_position = Vector3(place_item_coordinate) + Vector3(0.5, 0.0, 0.5)
 	preview_ghost.rotation.y = deg_to_rad(item_rotaion * 90)
 	preview_ghost.visible = true
 
@@ -68,7 +68,7 @@ func _place_item(coordinate: Vector3i) -> void:
 	grid_item.rotation.y = deg_to_rad(item_rotaion * -90)
 	
 	add_child(grid_item)
-	grid_item.global_position = Vector3(coordinate)
+	grid_item.global_position = Vector3(coordinate) + Vector3(0.5, 0.0, 0.5)
 	grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y] = grid_item
 
 func _is_valid_coordinate(coordinate: Vector3i) -> bool:

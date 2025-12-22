@@ -8,13 +8,13 @@
 [ext_resource type="Script" uid="uid://dnqpu3noj2rr6" path="res://Scripts/ConveyorBelt.gd" id="2_sqgfj"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bn5i1"]
-points = PackedVector3Array(0, 1.65948, 1.99981, -2, 1.25, 2, 0, 1.25, 1.99981, 0, 1.65948, -3.57628e-06, -2, 1.65948, 1.99981, -2, 1.25, -3.57628e-06, 0, 1.25, -3.57628e-06, -2, 1.65948, -3.57628e-06)
+points = PackedVector3Array(1, 1.65948, 0.999809, -1, 1.25, 1, 1, 1.25, 0.999809, 1, 1.65948, -1, -1, 1.65948, 0.999809, -1, 1.25, -1, 1, 1.25, -1, -1, 1.65948, -1)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ux06k"]
-points = PackedVector3Array(0.02, 1.75, 2.02, 0.02, 1.75, 1.91999, -2.02, 1.75, 2.02, 0.02, 1, 2.02, 0.02, 1, 1.91983, -2.02, 1.75, 1.91999, -2.02, 1, 2.02, -2.02, 1, 1.92)
+points = PackedVector3Array(1.02, 1.75, 1.01999, 1.02, 1.75, 0.91999, -1.02, 1.75, 1.01999, 1.02, 1, 1.01999, 1.02, 1, 0.919833, -1.02, 1.75, 0.91999, -1.02, 1, 1.01999, -1.02, 1, 0.92)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_45bor"]
-points = PackedVector3Array(0.02, 1.75, 0.0799904, 0.02, 1.75, -0.02, -2.02, 1.75, 0.0799904, -2.02, 1, 0.0800002, 0.02, 1, 0.0799904, 0.02, 1, -0.02, -2.02, 1.75, -0.02, -2.02, 1, -0.02)
+points = PackedVector3Array(1.02, 1.75, -0.92001, 1.02, 1.75, -1.02, -1.02, 1.75, -0.92001, -1.02, 1, -0.92, 1.02, 1, -0.92001, 1.02, 1, -1.02, -1.02, 1.75, -1.02, -1.02, 1, -1.02)
 
 [node name="Conveyor" type="Node3D"]
 script = ExtResource("1_bn5i1")
@@ -24,7 +24,7 @@ collision_mask = 0
 physics_material_override = ExtResource("1_btrgq")
 script = ExtResource("2_sqgfj")
 
-[node name="BelthColMes" type="CollisionShape3D" parent="Belt"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Belt"]
 transform = Transform3D(0, 0, 0.5, 0, 0.5, 0, -0.5, 0, 0, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_bn5i1")
 
