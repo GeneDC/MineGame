@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c2lh54k26bbuo"]
+
+[ext_resource type="Shader" uid="uid://cuvulsu3fletf" path="res://Shaders/GlobalTriplanar.gdshader" id="1_2ku1d"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2ku1d")
+shader_parameter/base_color = Color(0, 0, 0, 1)
+shader_parameter/texture_intensity = 1.0
+shader_parameter/scroll_speed_x = 0.0
+shader_parameter/scroll_speed_y = 0.0

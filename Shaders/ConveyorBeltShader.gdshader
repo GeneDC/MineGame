@@ -9,8 +9,9 @@ void fragment() {
     vec2 moving_uv = UV;
     moving_uv.x += TIME * scroll_speed_x;
     moving_uv.y += TIME * scroll_speed_y;
+	
+	vec3 tex_color = texture(belt_texture, moving_uv).rbg;
+	tex_color *= dot(tex_color.rgb, vec3(0.2126, 0.7152, 0.0722));
 
-    // Apply the offset UV to the texture
-    vec4 tex = texture(belt_texture, moving_uv);
-    ALBEDO = ALBEDO * tex.rgb;
+    ALBEDO = ALBEDO * tex_color;
 }

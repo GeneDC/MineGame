@@ -1,11 +1,11 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://hagnn4y4y1d0"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://hagnn4y4y1d0"]
 
-[ext_resource type="Shader" uid="uid://cuvulsu3fletf" path="res://Shaders/GlobalTriplanar.gdshader" id="1_6x4mb"]
+[ext_resource type="Shader" uid="uid://bqce6a6esjlg0" path="res://Shaders/ConveyorBeltShader.gdshader" id="1_vv6tf"]
+[ext_resource type="Texture2D" uid="uid://cnba2kqcqmdjt" path="res://Textures/Belt.png" id="2_mn3jf"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_6x4mb")
-shader_parameter/base_color = Color(0, 0, 0, 1)
-shader_parameter/texture_intensity = 0.5
+shader = ExtResource("1_vv6tf")
+shader_parameter/belt_texture = ExtResource("2_mn3jf")
 shader_parameter/scroll_speed_x = 0.0
 shader_parameter/scroll_speed_y = 0.2
