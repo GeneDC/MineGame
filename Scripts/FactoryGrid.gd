@@ -2,9 +2,11 @@ extends Node3D
 class_name FactoryGrid
 
 var grid_size := Vector3i(20, 10, 20)
+var grid_item_scenes: Array[PackedScene] = [preload("res://Prefabs/Conveyor.tscn")]
 var item_to_place: PackedScene = preload("res://Prefabs/Conveyor.tscn")
 var raycast: RayCast3D = null
 var preview_ghost: Node3D = null
+var item_index: int = -2
 var ghost_material_placable: Material = preload("res://Materials/GhostItemBlueMaterial.tres")
 var ghost_material_nonplacable: Material = preload("res://Materials/GhostItemRedMaterial.tres")
 var place_item_coordinate: Vector3i = Vector3i.ZERO
@@ -14,10 +16,7 @@ var item_rotaion: int = 0
 func _ready() -> void:
 	GameImGui.RegisterMainMenuWindow("Debug", "Factory Grid", _ImguiWindow)
 
-	preview_ghost = item_to_place.instantiate() as Node3D
-	preview_ghost.name = "Preview Item Ghost"
-	_prepare_ghost_recursive(preview_ghost, ghost_material_placable)
-	add_child(preview_ghost)
+	_select_item(-1)
 
 	grid_items.resize(grid_size.x * grid_size.y * grid_size.z)
 	
@@ -25,8 +24,10 @@ func _ready() -> void:
 	assert(raycast != null)
 
 func _process(_delta: float) -> void:
-	var target_pos := Vector3.ZERO
+	if not item_to_place:
+		return;
 	
+	var target_pos := Vector3.ZERO
 	if raycast.is_colliding():
 		var collision_point := raycast.get_collision_point()
 		var collision_normal := raycast.get_collision_normal()
@@ -54,6 +55,26 @@ func _process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("rotate_item"):
 		item_rotaion = (item_rotaion + 1) % 4
+
+func _select_item(new_item_index: int) -> void:
+	if new_item_index != item_index:
+		item_index = new_item_index
+		
+		item_to_place = null
+		
+		if preview_ghost:
+			preview_ghost.queue_free()
+			preview_ghost = null
+		
+		if item_index < 0:
+			return
+		
+		item_to_place = grid_item_scenes[item_index]
+		
+		preview_ghost = item_to_place.instantiate() as Node3D
+		preview_ghost.name = "Preview Item Ghost"
+		_prepare_ghost_recursive(preview_ghost, ghost_material_placable)
+		add_child(preview_ghost)
 
 func _place_item(coordinate: Vector3i) -> void:
 	if not _is_valid_coordinate(place_item_coordinate):
@@ -112,7 +133,23 @@ func _override_material_recursive(node: Node, material: Material) -> void:
 	for child in node.get_children():
 		_override_material_recursive(child, material)
 
+# ImGui and Debug code:
+
+var _imgui_show_grid := [false]
+
 func _ImguiWindow() -> void:
+	var items: Array[String] = ["none"]
+	for scene in grid_item_scenes:
+		items.append(scene.resource_path.get_file().get_basename())
+	var current_index: Array[int] = [item_index + 1]
+	if ImGui.ListBox("Item", current_index, items, items.size()):
+		_select_item(current_index[0] - 1)
+		
+	ImGui.Checkbox("Show grid outline", _imgui_show_grid)
+	if _imgui_show_grid[0]:
+		_DebugShowGrid()
+	
+func _DebugShowGrid() -> void:
 	var coordinate_a := Vector3.ZERO
 	var coordinate_b := Vector3.ZERO
 	for x in grid_size.x:

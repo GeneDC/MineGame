@@ -1,10 +1,5 @@
 extends StaticBody3D
+class_name ConveyorBelt
 
-@export var speed: float = 0.2
-
-func _ready() -> void:
-	update_conveyor_velocity()
-
-func update_conveyor_velocity() -> void:
-	# Conveyor mesh is setup to face positive x
+func update_conveyor_velocity(speed: float) -> void:
 	constant_linear_velocity = global_transform.basis.z * speed
