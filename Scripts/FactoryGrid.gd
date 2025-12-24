@@ -2,8 +2,8 @@ extends Node3D
 class_name FactoryGrid
 
 var grid_size := Vector3i(20, 10, 20)
-var grid_item_scenes: Array[PackedScene] = [preload("res://Prefabs/Conveyor.tscn")]
-var item_to_place: PackedScene = preload("res://Prefabs/Conveyor.tscn")
+var grid_item_scenes: Array[PackedScene] = [preload("res://Prefabs/GridItems/Conveyor.tscn")]
+var item_to_place: PackedScene = preload("res://Prefabs/GridItems/Conveyor.tscn")
 var raycast: RayCast3D = null
 var preview_ghost: Node3D = null
 var item_index: int = -2
@@ -11,7 +11,7 @@ var ghost_material_placable: Material = preload("res://Materials/GhostItemBlueMa
 var ghost_material_nonplacable: Material = preload("res://Materials/GhostItemRedMaterial.tres")
 var place_item_coordinate: Vector3i = Vector3i.ZERO
 var grid_items: Array[GridItem] = []
-var item_rotaion: int = 0
+var item_direction := GridItem.Direction.NORTH
 
 func _ready() -> void:
 	GameImGui.RegisterMainMenuWindow("Debug", "Factory Grid", _ImguiWindow)
@@ -47,14 +47,14 @@ func _process(_delta: float) -> void:
 		_override_material_recursive(preview_ghost, ghost_material_nonplacable)
 
 	preview_ghost.global_position = Vector3(place_item_coordinate) + Vector3(0.5, 0.0, 0.5)
-	preview_ghost.rotation.y = deg_to_rad(item_rotaion * 90)
+	preview_ghost.rotation.y = deg_to_rad(item_direction * -90)
 	preview_ghost.visible = true
 
 	if is_placable && Input.is_action_just_pressed("place_item"):
 		_place_item(preview_ghost.global_position)
 	
 	if Input.is_action_just_pressed("rotate_item"):
-		item_rotaion = (item_rotaion + 1) % 4
+		item_direction = GridItem.direction_right(item_direction)
 
 func _select_item(new_item_index: int) -> void:
 	if new_item_index != item_index:
@@ -86,11 +86,43 @@ func _place_item(coordinate: Vector3i) -> void:
 		push_error("Failed to instantiate grid item.")
 		return
 
-	grid_item.rotation.y = deg_to_rad(item_rotaion * -90)
+	grid_item.rotation.y = deg_to_rad(item_direction * -90)
+	grid_item.direction = item_direction
 	
 	add_child(grid_item)
 	grid_item.global_position = Vector3(coordinate) + Vector3(0.5, 0.0, 0.5)
+	grid_item.coodinate = coordinate
 	grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y] = grid_item
+
+	_send_grid_update(coordinate)
+	_send_grid_update(coordinate + Vector3i.FORWARD)
+	_send_grid_update(coordinate + Vector3i.BACK)
+	_send_grid_update(coordinate + Vector3i.LEFT)
+	_send_grid_update(coordinate + Vector3i.RIGHT)
+	_send_grid_update(coordinate + Vector3i.UP)
+	_send_grid_update(coordinate + Vector3i.DOWN)
+
+func _send_grid_update(coordinate: Vector3i) -> void:
+	var grid_item := try_get_grid_item(coordinate)
+	if not grid_item:
+		return
+	
+	var grid_item_forward := try_get_grid_item(coordinate + Vector3i.FORWARD)
+	var grid_item_back := try_get_grid_item(coordinate + Vector3i.BACK)
+	var grid_item_left := try_get_grid_item(coordinate + Vector3i.LEFT)
+	var grid_item_right := try_get_grid_item(coordinate + Vector3i.RIGHT)
+	var grid_item_up := try_get_grid_item(coordinate + Vector3i.UP)
+	var grid_item_down := try_get_grid_item(coordinate + Vector3i.DOWN)
+	
+	if grid_item.direction == GridItem.Direction.NORTH:
+		grid_item.grid_update(grid_item_forward, grid_item_right, grid_item_back, grid_item_left, grid_item_up, grid_item_down)
+	elif grid_item.direction == GridItem.Direction.EAST:
+		grid_item.grid_update(grid_item_right, grid_item_back, grid_item_left, grid_item_forward, grid_item_up, grid_item_down)
+	elif grid_item.direction == GridItem.Direction.SOUTH:
+		grid_item.grid_update(grid_item_back, grid_item_left, grid_item_forward, grid_item_right, grid_item_up, grid_item_down)
+	elif grid_item.direction == GridItem.Direction.WEST:
+		grid_item.grid_update(grid_item_left, grid_item_forward, grid_item_right, grid_item_back, grid_item_up, grid_item_down)
+
 
 func _is_valid_coordinate(coordinate: Vector3i) -> bool:
 	return (coordinate.x < grid_size.x && coordinate.y < grid_size.y && coordinate.z < grid_size.z
@@ -99,6 +131,14 @@ func _is_valid_coordinate(coordinate: Vector3i) -> bool:
 ## Returns true if there is no item at this coordinate
 func _is_coordinate_free(coordinate: Vector3i) -> bool:
 	return grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y] == null
+
+func get_grid_item(coordinate: Vector3i) -> GridItem:
+	return grid_items[coordinate.x + coordinate.y * grid_size.x + coordinate.z * grid_size.x * grid_size.y]
+
+func try_get_grid_item(coordinate: Vector3i) -> GridItem:
+	if _is_valid_coordinate(coordinate):
+		return get_grid_item(coordinate)
+	return null
 
 func _prepare_ghost_recursive(node: Node, material: Material) -> void:
 	# Disable Scripts & Processing
