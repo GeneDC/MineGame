@@ -1,38 +1,30 @@
-[gd_scene load_steps=6 format=3 uid="uid://0ks2dqvpf5ae"]
+[gd_scene load_steps=7 format=3 uid="uid://0ks2dqvpf5ae"]
 
-[ext_resource type="Material" uid="uid://bsora1yg04nug" path="res://Materials/Ground.tres" id="1_glv2v"]
+[ext_resource type="Material" uid="uid://cnsa4xj257qno" path="res://Materials/GroundMaterial.tres" id="1_cm0pq"]
 [ext_resource type="Script" uid="uid://cl6rgs4rfg3j5" path="res://Scripts/FreeCamera.gd" id="3_cm0pq"]
 [ext_resource type="Texture2D" uid="uid://kyp0ng33o2oe" path="res://Textures/crosshair_dot.png" id="4_cm0pq"]
+[ext_resource type="PackedScene" uid="uid://bdwxs6qggf0eo" path="res://Prefabs/PlayerCharacter.tscn" id="4_fos0i"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_g1cgm"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_jvalw"]
-size = Vector3(1, 0.499634, 1)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_r0du0"]
+data = PackedVector3Array(0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0)
 
 [node name="Root" type="Node3D"]
 
 [node name="GroundPlane" type="Node3D" parent="."]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 10, 0, 10)
+transform = Transform3D(400, 0, 0, 0, 400, 0, 0, 0, 400, 10, 0, 10)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GroundPlane"]
 transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
 mesh = SubResource("QuadMesh_g1cgm")
-surface_material_override/0 = ExtResource("1_glv2v")
+surface_material_override/0 = ExtResource("1_cm0pq")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="GroundPlane"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GroundPlane/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.250184, 0)
-shape = SubResource("BoxShape3D_jvalw")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-physics_interpolation_mode = 2
-transform = Transform3D(-0.0541775, 0.348949, -0.935574, 0, 0.93695, 0.349463, 0.998531, 0.018933, -0.0507616, 5.64223, 4.37209, 9.25436)
-top_level = true
-script = ExtResource("3_cm0pq")
-
-[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
-target_position = Vector3(0, 0, -4)
+transform = Transform3D(1, 0, 0, 0, 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_r0du0")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.917095, -0.356206, 0.179036, 0, 0.449085, 0.893489, -0.398669, -0.819414, 0.411854, 7.20138, 12.1036, 0)
@@ -53,3 +45,27 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_cm0pq")
 stretch_mode = 5
+
+[node name="Character" parent="." instance=ExtResource("4_fos0i")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.0147476, -1.13249e-06, -0.0947762)
+mouse_sensitivity = 1.0
+controls = {
+&"BACKWARD": "player_move_back",
+&"CROUCH": "player_crouch",
+&"FORWARD": "player_move_forward",
+&"JUMP": "ui_accept",
+&"LEFT": "player_move_left",
+&"PAUSE": "ui_cancel",
+&"RIGHT": "player_move_right",
+&"SPRINT": "player_sprint"
+}
+
+[node name="FreeCam" type="Camera3D" parent="."]
+process_mode = 4
+physics_interpolation_mode = 2
+transform = Transform3D(-0.0541775, 0.348949, -0.935574, 0, 0.93695, 0.349462, 0.998531, 0.018933, -0.0507617, 5.64223, 4.37209, 9.25436)
+top_level = true
+script = ExtResource("3_cm0pq")
+
+[node name="RayCast3D" type="RayCast3D" parent="FreeCam"]
+target_position = Vector3(0, 0, -4)

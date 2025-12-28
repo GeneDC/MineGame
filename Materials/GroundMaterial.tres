@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cnsa4xj257qno"]
+
+[ext_resource type="Shader" uid="uid://cdqgpkk5lcg4k" path="res://Shaders/DrgGlobalTriplanar.gdshader" id="1_m1suk"]
+[ext_resource type="Texture2D" uid="uid://bkwh7hhln144n" path="res://Textures/Rock.png" id="2_lbf46"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_m1suk")
+shader_parameter/base_color = Color(0.341176, 0.231373, 0.0705882, 1)
+shader_parameter/global_surface_tex = ExtResource("2_lbf46")
+shader_parameter/texture_intensity = 1.0
+shader_parameter/uv_scale = 0.1

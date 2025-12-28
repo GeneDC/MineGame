@@ -23,6 +23,7 @@ size = Vector3(0.0425415, 0.604675, 0.602112)
 size = Vector3(0.0272827, 0.605682, 0.597412)
 
 [node name="Miner" type="Node3D"]
+physics_interpolation_mode = 2
 script = ExtResource("1_xjymj")
 ore_types = Array[int]([1, 2, 3])
 
@@ -66,9 +67,9 @@ bones/0/rotation = Quaternion(-0.707106, 0.00130821, 0.707106, -0.00130517)
 bones/2/rotation = Quaternion(-2.18737e-06, -2.21956e-07, -0.00184793, 0.999998)
 
 [node name="Head" parent="MinerMesh/Armature/Skeleton3D" index="0"]
-transform = Transform3D(0.5, -4.58171e-08, 1.58467e-07, 4.57777e-08, 0.5, -6.01837e-09, -1.66409e-07, 5.55225e-09, 0.5, -7.44212e-06, -0.822648, 0.00662913)
+transform = Transform3D(0.5, -4.53303e-08, 3.92554e-08, 4.53159e-08, 0.5, -2.87516e-09, -4.71998e-08, 2.40851e-09, 0.5, -7.44505e-06, -0.822648, 0.00662913)
 
 [node name="Piston" parent="MinerMesh/Armature/Skeleton3D" index="1"]
-transform = Transform3D(0.5, 2.14077e-06, 2.9804e-07, -2.14189e-06, 0.499997, 0.00184797, -2.98067e-07, -0.00184797, 0.499997, -7.85265e-06, -0.824874, 0.0059595)
+transform = Transform3D(0.5, 2.1417e-06, 1.7883e-07, -2.14236e-06, 0.499997, 0.00184797, -1.78858e-07, -0.00184797, 0.499997, -7.85542e-06, -0.824874, 0.0059595)
 
 [editable path="MinerMesh"]

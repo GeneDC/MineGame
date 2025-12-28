@@ -2,7 +2,7 @@ extends Node3D
 class_name FactoryGrid
 
 var grid_size := Vector3i(20, 10, 20)
-var grid_item_scenes: Array[PackedScene] = [	preload("res://Prefabs/GridItems/Conveyor.tscn"),
+var grid_item_scenes: Array[PackedScene] = [preload("res://Prefabs/GridItems/Conveyor.tscn"),
 											preload("res://Prefabs/GridItems/Miner.tscn")]
 var item_to_place: PackedScene = preload("res://Prefabs/GridItems/Conveyor.tscn")
 var raycast: RayCast3D = null
@@ -20,13 +20,16 @@ func _ready() -> void:
 	_select_item(-1)
 
 	grid_items.resize(grid_size.x * grid_size.y * grid_size.z)
-	
-	raycast = get_tree().current_scene.get_node("Camera3D/RayCast3D")
-	assert(raycast != null)
+
+func register_placement_ray(ray: RayCast3D) -> void:
+	raycast = ray
 
 func _process(_delta: float) -> void:
 	if not item_to_place:
-		return;
+		return
+	
+	if not raycast:
+		return
 	
 	var target_pos := Vector3.ZERO
 	if raycast.is_colliding():

@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdwxs6qggf0eo"]
+
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="1_ccx4r"]
+[ext_resource type="Script" uid="uid://chyehp5xmtwuu" path="res://Prefabs/GridPlacementRay.gd" id="2_67lfy"]
+
+[node name="PlayerCharacter" instance=ExtResource("1_ccx4r")]
+controls = {
+&"BACKWARD": "player_move_back",
+&"CROUCH": "crouch",
+&"FORWARD": "player_move_forward",
+&"JUMP": "ui_accept",
+&"LEFT": "player_move_left",
+&"PAUSE": "ui_cancel",
+&"RIGHT": "player_move_right",
+&"SPRINT": "sprint"
+}
+
+[node name="Camera" parent="Head" index="0"]
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera" index="0"]
+target_position = Vector3(0, 0, -5)
+script = ExtResource("2_67lfy")

@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dlc240muajxwf"]
 
-[ext_resource type="Shader" uid="uid://cuvulsu3fletf" path="res://Shaders/GlobalTriplanar.gdshader" id="1_uhaiu"]
+[ext_resource type="Shader" uid="uid://cuvulsu3fletf" path="res://Shaders/LocalTriplanar.gdshader" id="1_uhaiu"]
 
 [resource]
 render_priority = 0
