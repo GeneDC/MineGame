@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://o54kt2f1hwpi"]
+
+[ext_resource type="Script" uid="uid://b04b8aamgckqc" path="res://Scripts/Miner.gd" id="1_xjymj"]
+[ext_resource type="PackedScene" uid="uid://1uglniqwf4gw" path="res://Meshes/MinerMesh.glb" id="2_4rjuq"]
+[ext_resource type="PhysicsMaterial" uid="uid://dri5hyc4yu142" path="res://PhysicsMaterials/MachinePhysicsMaterial.tres" id="2_eaphn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eaphn"]
+size = Vector3(1, 1.47506, 0.98877)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnmfd"]
+size = Vector3(1, 0.242645, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ksek2"]
+size = Vector3(1, 0.657471, 0.767578)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g3wlg"]
+size = Vector3(0.594971, 0.036377, 0.605225)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r217q"]
+size = Vector3(0.0425415, 0.604675, 0.602112)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uba8r"]
+size = Vector3(0.0272827, 0.605682, 0.597412)
+
+[node name="Miner" type="Node3D"]
+script = ExtResource("1_xjymj")
+ore_types = Array[int]([1, 2, 3])
+
+[node name="Collider" type="StaticBody3D" parent="."]
+collision_mask = 0
+physics_material_override = ExtResource("2_eaphn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00153899, 0.378521, -0.00362743)
+shape = SubResource("BoxShape3D_eaphn")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00931835, 1.88798, 0.0148356)
+shape = SubResource("BoxShape3D_qnmfd")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0115869, 1.44479, 0.132904)
+shape = SubResource("BoxShape3D_ksek2")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 0.911403, 0.411514, 0, -0.411514, 0.911403, 0.00354507, 1.11423, -0.530787)
+shape = SubResource("BoxShape3D_g3wlg")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 0.911403, 0.411514, 0, -0.411514, 0.911403, 0.283483, 1.38322, -0.641695)
+shape = SubResource("BoxShape3D_r217q")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collider"]
+transform = Transform3D(1, 0, 0, 0, 0.911403, 0.411514, 0, -0.411514, 0.911403, -0.284672, 1.38342, -0.647107)
+shape = SubResource("BoxShape3D_uba8r")
+
+[node name="OreSpawnRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1.50346, -0.456557)
+target_position = Vector3(0, 0, -1)
+
+[node name="MinerMesh" parent="." instance=ExtResource("2_4rjuq")]
+
+[node name="Skeleton3D" parent="MinerMesh/Armature" index="0"]
+bones/0/position = Vector3(-6.40317e-07, 0.662375, 0.000464327)
+bones/0/rotation = Quaternion(-0.707106, 0.00130821, 0.707106, -0.00130517)
+bones/2/rotation = Quaternion(-2.18737e-06, -2.21956e-07, -0.00184793, 0.999998)
+
+[node name="Head" parent="MinerMesh/Armature/Skeleton3D" index="0"]
+transform = Transform3D(0.5, -4.58171e-08, 1.58467e-07, 4.57777e-08, 0.5, -6.01837e-09, -1.66409e-07, 5.55225e-09, 0.5, -7.44212e-06, -0.822648, 0.00662913)
+
+[node name="Piston" parent="MinerMesh/Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.5, 2.14077e-06, 2.9804e-07, -2.14189e-06, 0.499997, 0.00184797, -2.98067e-07, -0.00184797, 0.499997, -7.85265e-06, -0.824874, 0.0059595)
+
+[editable path="MinerMesh"]

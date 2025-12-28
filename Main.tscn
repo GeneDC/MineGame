@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://0ks2dqvpf5ae"]
+[gd_scene load_steps=6 format=3 uid="uid://0ks2dqvpf5ae"]
 
 [ext_resource type="Material" uid="uid://bsora1yg04nug" path="res://Materials/Ground.tres" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://cl6rgs4rfg3j5" path="res://Scripts/FreeCamera.gd" id="3_cm0pq"]
 [ext_resource type="Texture2D" uid="uid://kyp0ng33o2oe" path="res://Textures/crosshair_dot.png" id="4_cm0pq"]
-[ext_resource type="PackedScene" uid="uid://o54kt2f1hwpi" path="res://Prefabs/Miner.tscn" id="4_fos0i"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_g1cgm"]
 
@@ -34,9 +33,6 @@ script = ExtResource("3_cm0pq")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -4)
-
-[node name="Miner" parent="." instance=ExtResource("4_fos0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.5, 10)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.917095, -0.356206, 0.179036, 0, 0.449085, 0.893489, -0.398669, -0.819414, 0.411854, 7.20138, 12.1036, 0)

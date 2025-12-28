@@ -2,7 +2,8 @@ extends Node3D
 class_name FactoryGrid
 
 var grid_size := Vector3i(20, 10, 20)
-var grid_item_scenes: Array[PackedScene] = [preload("res://Prefabs/GridItems/Conveyor.tscn")]
+var grid_item_scenes: Array[PackedScene] = [	preload("res://Prefabs/GridItems/Conveyor.tscn"),
+											preload("res://Prefabs/GridItems/Miner.tscn")]
 var item_to_place: PackedScene = preload("res://Prefabs/GridItems/Conveyor.tscn")
 var raycast: RayCast3D = null
 var preview_ghost: Node3D = null
