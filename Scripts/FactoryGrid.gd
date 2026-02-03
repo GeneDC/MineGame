@@ -192,17 +192,55 @@ func _ImguiWindow() -> void:
 	ImGui.Checkbox("Show grid outline", _imgui_show_grid)
 	if _imgui_show_grid[0]:
 		_DebugShowGrid()
-	
+	elif (debug_grid_mesh): 
+		debug_grid_mesh.visible = false
+
+var debug_grid_mesh: MeshInstance3D
+var debug_grid_material: ShaderMaterial = preload("res://Materials/DebugGridMaterial.tres")
+
 func _DebugShowGrid() -> void:
-	var coordinate_a := Vector3.ZERO
-	var coordinate_b := Vector3.ZERO
-	for x in grid_size.x:
-		coordinate_a.x = x
-		coordinate_b.x = x + 1
-		for y in grid_size.y:
-			coordinate_a.y = y
-			coordinate_b.y = y + 1
-			for z in grid_size.z:
-				coordinate_a.z = z
-				coordinate_b.z = z + 1
-				DebugDraw3D.draw_aabb_ab(coordinate_a, coordinate_b, Color.DARK_GREEN, 0)
+	if (!debug_grid_mesh):
+		debug_grid_mesh = MeshInstance3D.new()
+		debug_grid_mesh.name = "DebugGridMesh"
+		debug_grid_mesh.material_override = debug_grid_material
+		
+		add_child(debug_grid_mesh)
+		var immediate_mesh := ImmediateMesh.new()
+		debug_grid_mesh.mesh = immediate_mesh
+		
+		immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+		
+		var coordinate := Vector3.ZERO
+		for x in grid_size.x + 1:
+			coordinate.x = x
+			for y in grid_size.y + 1:
+				coordinate.y = y
+				
+				immediate_mesh.surface_set_normal(Vector3.BACK)
+				immediate_mesh.surface_add_vertex(coordinate)
+				immediate_mesh.surface_set_normal(Vector3.BACK)
+				immediate_mesh.surface_add_vertex(coordinate + Vector3.BACK * grid_size.z)
+				
+		coordinate = Vector3.ZERO
+		for y in grid_size.y + 1:
+			coordinate.y = y
+			for z in grid_size.z + 1:
+				coordinate.z = z
+				immediate_mesh.surface_set_normal(Vector3.RIGHT)
+				immediate_mesh.surface_add_vertex(coordinate)
+				immediate_mesh.surface_set_normal(Vector3.RIGHT)
+				immediate_mesh.surface_add_vertex(coordinate + Vector3.RIGHT * grid_size.x)
+				
+		coordinate = Vector3.ZERO
+		for z in grid_size.z + 1:
+			coordinate.z = z
+			for x in grid_size.x + 1:
+				coordinate.x = x
+				immediate_mesh.surface_set_normal(Vector3.UP)
+				immediate_mesh.surface_add_vertex(coordinate)
+				immediate_mesh.surface_set_normal(Vector3.UP)
+				immediate_mesh.surface_add_vertex(coordinate + Vector3.UP * grid_size.y)
+		
+		immediate_mesh.surface_end()
+	
+	debug_grid_mesh.visible = true
